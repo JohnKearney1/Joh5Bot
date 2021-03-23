@@ -1,8 +1,12 @@
-# [@Joh5Bot](https://twitter.com/joh5bot) - Crowdsourced Perpetual Futures
-> Version 1.0.0
+# @Joh5Bot - Crowdsourced Perpetual Futures
+> **v1.1.0**
 ## What is this?
 
-@Joh5Bot is a twitter bot with access to a cryptocurrency exchange and a wallet. The bot waits for tweet "mentions" in the format below, and counts each tweet as a vote. Every hour, the bot tallies the votes and decides whether to long or short a suggested currency. The bot then takes market order on the given currency for 15% of the total account's balance, using 10x leverage. The bot then "sleeps" for exactly one hour, then closes the open position with a market order. This process repeats itself every hour.
+[@Joh5Bot](https://twitter.com/joh5bot) is a twitter bot with access to a cryptocurrency exchange and a wallet. The bot waits for tweet "mentions" in the format below, and counts each tweet as a vote. Every hour, the bot tallies the votes and decides whether to long or short a suggested currency. The bot then takes market order on the given currency for 15% of the total account's balance, using 10x leverage. The bot then "sleeps" for exactly one hour, then closes the open position with a market order. This process repeats itself every hour, constituting a "round".
+
+At the end of every round, the bot sends a tweet with the vote totals for the upcoming round, and displays the total balance and total PNL. Checking the balance of the bot after a round against the bot's previous tweet yields the result of the last trade. The bot is active 24/7 apart from when it is undergoing a bug fix or testing.
+
+The bot's status is listed in the location field of it's twitter bio.
 
 **Ruleset:**
 
@@ -15,22 +19,33 @@ When the bot is long, the profile picture is green. Inversely, when the bot is s
 The bot is running using the minimum balance as I develop it. I may stop or put the bot in test modes at my discretion. I may add to the account at such time that any potential bugs or behavioral errors have been squashed. These rules may be augmented as I do or don't develop this out.
 
 
-**The code for this project is avalible on [my GitHub](https://github.com/JohnKearney1/Joh5Bot). See below for usage.**
+**The code for this project is available on [my GitHub](https://github.com/JohnKearney1/Joh5Bot). See below for usage.**
+
+**Found a bug?** Open an issue on [GitHub](https://github.com/JohnKearney1/Joh5Bot), or direct message @Joh5Bot with details.
 
 ## Tweet Me!  
+##### Mention @Joh5Bot anywhere on twitter using the format below, and your vote will get added to the next round!
 
 **Format:** `@Joh5Bot (#buy/#sell) <Coin Symbol>`  
 *Insert a coin symbol from the table below!*
 
-**Example 1:** `@Joh5Bot #buy LINKUSDT`  
-*[Try](https://twitter.com/intent/tweet?text=@Joh5Bot%20#buy%20LINKUSDT&related=joh5bot) a simple buy vote for ChainLink*
+**Do:** `@Joh5Bot #buy BTC`  
+*[Try](https://twitter.com/intent/tweet?text=@Joh5Bot%20#buy%20LINKUSDT&related=joh5bot) a simple buy vote for Bitcoin*
 
-**Example 2:** `@Joh5Bot #sell etH`  
+**Do:** `@Joh5Bot #sell eTh`  
 *Capitalization is irrelevant*
 
-**Do Not:** `@Joh5Bot #Buy $ALICE/USD`  
-*Coin Symbols must be from the list below, no slashes are required, and no operator is necessary*
+**Do NOT:** `@Joh5Bot #Buy $LinkUSD`  
+*Coin Symbols must be from the list below, and only include the traded currency.*  
+*The base currency will always be USD-T, and no operators ($) are supported.*
 
+**Do NOT:** `@Joh5Bot #Buy Link omg ada`  
+*Only the first coin mentioned in the tweet will be tallied, others are ignored.*
+
+**Do NOT:** `@Joh5Bot #Buy One Bitcoin`  
+*Don't use colloquial names for coins, only the coin symbol is supported.*  
+*Don't specify amounts for the order, the amount is a default percentage.*  
+*In this example, the votes were tallied as one vote to "buy" and one vote for "ONEUSDT" as the currency*
 
 
 ## Symbol List  
@@ -155,3 +170,13 @@ The bot is running using the minimum balance as I develop it. I may stop or put 
 **4. Run `python3 main.py` from the root directory. The bot will take its first poll immediately, then sleep.**
 
 ## Changelog
+
+**03-22-2021**
+> **v1.0.0 - Initial Commit**  
+*Added `README.md`, Core Files, and `config.yml` for GH-Pages, as well as Supported Symbols.*
+*Created Pre-Release v1.0.0*
+
+**03-23-2021**
+> **v1.1.0 - BugFix**  
+*Includes a restructure of the tweet parsing definition. Now supports a wider range of variable tweets with better error handling. "USDT" is no longer required for the bot to register a symbol from a mention tweet.*
+*Created Release v1.1.0*

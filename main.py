@@ -45,6 +45,7 @@ def append_new_line(file_name, text_to_append):
 
 # Set the client data for the Tweepy API (Partial scope with return)
 def create_api():
+
     # Load Twitter Developer API keys from json
     twitterKeys = json.load(open('API/twitter.json'))
 
@@ -68,6 +69,27 @@ def create_api():
 
     # Return the API as an object to the outer scope
     return api
+
+
+def list_contains(List1, List2):
+    check = False
+    index = 0
+
+    # Iterate in the 1st list
+    for m in List1:
+
+        # Iterate in the 2nd list
+        for n in List2:
+
+            # Track the index of the coinlist and return it
+
+            # if there is a match
+            if m == n:
+                index = List2.index(n)
+                check = True
+                return check, index
+
+    return check, index  # boolean
 
 
 # Retrieve data from the Tweepy API using the client data in create_api()
@@ -100,8 +122,9 @@ def get_tweets(api):
     print("\nMentions Retrieved ...\n\nProcessing Mentions ...")
     bSymbol = "-1"
 
-    usd1 = "USDT"
-    usd2 = usd1.lower()
+    # Get the list of accepted symbols, and put each line into a list with the newline removed.
+    acceptedCoins = [x[:-1] for x in open('coinlist.txt', 'r').readlines()]
+    print("Allowed coin list ... " + str(acceptedCoins))
 
     # Iterate through all tweets and check them for relevant information, save the info for later
     for t in tweets:
@@ -110,8 +133,15 @@ def get_tweets(api):
         print("\nScanned Tweet ID: " + str(t.id))
         print("\nScanned Tweet Text: " + str(t.text))
 
+        # Get the fetched tweet as a list of strings, split it at the spaces, and change it to uppercase:
+        fetchedTweet = t.text.upper().split(" ")
+        print("Fetched Tweet -> " + str(fetchedTweet))
+
+        hasCoin, coinIndex = list_contains(fetchedTweet, acceptedCoins)
+        print("hasCoin = " + str(hasCoin) + "\ncoinIndex = "+ str(coinIndex))
+
         # If the hashtags for buy exist in the current tweet, do this
-        if "#buy" in str(t.text) or "#BUY" in str(t.text) or "#Buy" in str(t.text):
+        if "#BUY" in fetchedTweet:
 
             # Add one to the total votes for "buy"
             buyCount = buyCount + 1
@@ -119,14 +149,14 @@ def get_tweets(api):
 
             # Check for a trading pair/symbol in the current tweet, and if one exists, add it to "symbols.txt"
 
-            if usd1 in str(t.text) or usd2 in str(t.text):
+            if hasCoin:
 
                 # Format the input text to set the symbol as the 3rd word in the tweet, and chop off any newlines,
                 # spaces, or unwanted text
-                bSymbol = str(t.text.split(' ')[2].upper().replace('USDT', '').replace('\n', '').replace(' ', ''))
+                bSymbol = str(acceptedCoins[coinIndex] + "USDT")
 
-                # Do another check to make sure the symbol is JUST the desired coin, 1-5 chars with no 'usd' or 'usdt'
-                if 1 < len(bSymbol) <= 5:
+                # Do another check to make sure the symbol is JUST the desired coin, 1-5 chars + 4 chars for 'usdt'
+                if 1 < len(bSymbol) <= 9:
 
                     # Save the current symbol to a new line on 'symbol.txt' without overwriting (append mode)
                     append_new_line("symbol.txt", bSymbol)
@@ -143,22 +173,21 @@ def get_tweets(api):
                 print("Did nothing, we couldn't find a symbol here ...")
 
         # Otherwise, if the hashtags for sell exist in the current tweet, do this instead
-        elif "#sell" in str(t.text) or "#SELL" in str(t.text) or "#Sell" in str(t.text):
+        elif "#SELL" in fetchedTweet:
 
             # Add one to the total votes for "sell"
             sellCount = sellCount + 1
             print("\nScanned tweet contained a sell vote ... ")
 
             # Check for a trading pair/symbol in the current tweet, and if one exists, add it to "symbols.txt"
-
-            if usd1 in str(t.text) or usd2 in str(t.text):
+            if hasCoin:
 
                 # Format the input text to set the symbol as the 3rd word in the tweet, and chop off any newlines,
                 # spaces, or unwanted text
-                bSymbol = str(t.text.split(' ')[2].upper().replace('USDT', '').replace('\n', '').replace(' ', ''))
+                bSymbol = str(acceptedCoins[coinIndex] + "USDT")
 
-                # Do another check to make sure the symbol is JUST the desired coin, 1-5 chars with no 'usd' or 'usdt'
-                if 1 < len(bSymbol) <= 5:
+                # Do another check to make sure the symbol is JUST the desired coin, 1-5 chars + 4 chars for 'usdt'
+                if 1 < len(bSymbol) <= 9:
 
                     # Save the current symbol to a new line on 'symbol.txt' without overwriting (append mode)
                     append_new_line("symbol.txt", bSymbol)
@@ -171,18 +200,17 @@ def get_tweets(api):
                 print("\nScanned tweet contained a symbol ... " + bSymbol)
 
             # Otherwise, if the tweet didn't include a symbol, do nothing and print to the console
-            elif "USDT" or "usdt" not in str(t.text):
+            else:
                 print("Did nothing, we couldn't find a symbol here ...")
 
         # Check if the mention included a symbol without a #buy or #sell
-        elif usd1 in str(t.text) or usd2 in str(t.text):
+        elif hasCoin and "#BUY" not in fetchedTweet and "#SELL" not in fetchedTweet:
 
-            # Format the input text to set the symbol as the 3rd word in the tweet, and chop off any newlines,
-            # spaces, or unwanted text
-            bSymbol = str(t.text.split(' ')[2].upper().replace('USDT', '').replace('\n', '').replace(' ', ''))
+            # Set the symbol to the selected coin + USDT
+            bSymbol = str(acceptedCoins[coinIndex] + "USDT")
 
-            # Do another check to make sure the symbol is JUST the desired coin, 1-5 chars with no 'usd' or 'usdt'
-            if 1 < len(bSymbol) <= 5:
+            # Do another check to make sure the symbol is JUST the desired coin, 1-5 chars + 4 chars for 'usdt'
+            if 1 < len(bSymbol) <= 9:
 
                 # Save the current symbol to a new line on 'symbol.txt' without overwriting (append mode)
                 append_new_line("symbol.txt", bSymbol)
@@ -204,6 +232,7 @@ def get_tweets(api):
 
         with open('lastID.txt', 'w') as f:
             f.write(str(t.id))
+            f.close()
 
     # Next, calculate if there were more buy or sell votes, and return a value 0-2 as 'isLong' so the bot knows what
     # action to take with the parsed information.
@@ -341,8 +370,8 @@ def main():
             print("Did nothing!")
 
             priceTweet = "NA"
-            sideTweet = "NA"
-            votesTweet = str(longvotes + shortvotes)
+            sideTweet = "No Position"
+            votesTweet = str(longvotes + shortvotes) + " | +" + str(longvotes) + " | -" + str(shortvotes)
             boughtTweet = "0"
             symbolTweet = "NA"
             currentBalTweet = float(
@@ -398,7 +427,7 @@ def main():
 
                 # Set the trading symbol to the most voted for coin, append "USDT", then transform the string to
                 # uppercase.
-                tSymbol = str(frequent_word + "USDT").upper()
+                tSymbol = str(frequent_word).upper()
 
                 # Close 'symbols.txt'
                 f.close()
@@ -451,7 +480,7 @@ def main():
             if "." in notional:
                 notional = str(notional)[str(notional).find("."):]
                 # Sets notional = the number of decimal places
-                notional = int(notional.replace(".", "")) - 1
+                notional = len(notional.replace(".", "")) - 1
             elif "e" in notional:
                 notional = int(notional[3:]) - 1
                 while notional >= 3:
@@ -560,7 +589,7 @@ def main():
 
                 # Set the trading symbol to the most voted for coin, append "USDT", then transform the string to
                 # uppercase.
-                tSymbol = str(frequent_word + "USDT").upper()
+                tSymbol = str(frequent_word).upper()
 
                 # Close 'symbols.txt'
                 f.close()
@@ -613,7 +642,7 @@ def main():
             if "." in notional:
                 notional = str(notional)[str(notional).find("."):]
                 # Sets notional = the number of decimal places
-                notional = int(notional.replace(".", "")) - 1
+                notional = len(notional.replace(".", "")) - 1
             elif "e" in notional:
                 notional = int(notional[3:]) - 1
                 while notional >= 3:
