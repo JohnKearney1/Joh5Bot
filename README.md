@@ -4,11 +4,16 @@
 
 @Joh5Bot is a twitter bot with access to a cryptocurrency exchange and a wallet. The bot waits for tweet "mentions" in the format below, and counts each tweet as a vote. Every hour, the bot tallies the votes and decides whether to long or short a suggested currency. The bot then takes market order on the given currency for 15% of the total account's balance, using 10x leverage. The bot then "sleeps" for exactly one hour, then closes the open position with a market order. This process repeats itself every hour.
 
+
+**Ruleset:**
+
 If no votes are cast, or no coins are suggested, the bot takes no position and updates its balance and profile picture to a neutral white.
+
+If an equal number of buy and sell votes are cast, the bot takes no position and updates its balance and profile picture to a neutral white.
 
 When the bot is long, the profile picture is green. Inversely, when the bot is short, the profile picture is red.
 
-The bot is running using the minimum balance as I develop it. I may stop or put the bot in test modes at my discretion. I may add to the account at such time that any potential bugs or behavioral errors have been squashed.
+The bot is running using the minimum balance as I develop it. I may stop or put the bot in test modes at my discretion. I may add to the account at such time that any potential bugs or behavioral errors have been squashed. These rules may be augmented as I do or don't develop this out.
 
 
 **The code for this project is avalible on [my GitHub](https://github.com/JohnKearney1/Joh5Bot). See below for usage.**
