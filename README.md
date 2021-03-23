@@ -1,9 +1,8 @@
 # [@Joh5Bot](https://twitter.com/joh5bot) - Crowdsourced Perpetual Futures
-
+> Version 1.0.0
 ## What is this?
 
 @Joh5Bot is a twitter bot with access to a cryptocurrency exchange and a wallet. The bot waits for tweet "mentions" in the format below, and counts each tweet as a vote. Every hour, the bot tallies the votes and decides whether to long or short a suggested currency. The bot then takes market order on the given currency for 15% of the total account's balance, using 10x leverage. The bot then "sleeps" for exactly one hour, then closes the open position with a market order. This process repeats itself every hour.
-
 
 **Ruleset:**
 
@@ -154,3 +153,5 @@ The bot is running using the minimum balance as I develop it. I may stop or put 
 ![](img/Snip1.png)
 
 **4. Run `python3 main.py` from the root directory. The bot will take its first poll immediately, then sleep.**
+
+## Changelog
