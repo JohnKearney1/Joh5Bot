@@ -178,5 +178,5 @@ The bot is running using the minimum balance as I develop it. I may stop or put 
 
 **03-23-2021**
 > **v1.1.0 - BugFix**  
-*Includes a restructure of the tweet parsing definition. Now supports a wider range of variable tweets with better error handling. "USDT" is no longer required for the bot to register a symbol from a mention tweet.*
+*Includes a restructure of the tweet parsing definition. Now supports a wider range of variable tweets with better error handling. "USDT" is no longer required for the bot to register a symbol from a mention tweet.*  
 *Created Release v1.1.0*
