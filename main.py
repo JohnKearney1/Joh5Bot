@@ -3,9 +3,7 @@ import time
 from binance.client import Client
 import datetime
 import json
-
-# Set client data for the Binance API (Full scope)
-from binance.exceptions import BinanceAPIException
+from binance.exceptions import *
 
 # Load Binance keys from json
 binanceKeys = json.load(open('API/binance.json'))
@@ -70,7 +68,7 @@ def create_api():
     # Return the API as an object to the outer scope
     return api
 
-
+# Check if a
 def list_contains(List1, List2):
     check = False
     index = 0
@@ -97,14 +95,14 @@ def get_tweets(api):
     print("\nRunning Mention Filter ... get_tweets()")
 
     # Open the last mentioned tweet ID as the starting point for the round
-    with open('lastID.txt', 'r') as f:
+    with open('logging/lastID.txt', 'r') as f:
         new_sid = f.read()
         f.close()
 
     print("\nRetrieving mentions since tweed ID #" + str(new_sid))
 
     # Clear the symbols from the previous round for an accurate count of the current round
-    with open('symbol.txt', 'w') as f:
+    with open('logging/symbol.txt', 'w') as f:
         f.write("")
         f.close()
 
@@ -123,7 +121,7 @@ def get_tweets(api):
     bSymbol = "-1"
 
     # Get the list of accepted symbols, and put each line into a list with the newline removed.
-    acceptedCoins = [x[:-1] for x in open('coinlist.txt', 'r').readlines()]
+    acceptedCoins = [x[:-1] for x in open('logging/coinlist.txt', 'r').readlines()]
     print("Allowed coin list ... " + str(acceptedCoins))
 
     # Iterate through all tweets and check them for relevant information, save the info for later
@@ -159,7 +157,7 @@ def get_tweets(api):
                 if 1 < len(bSymbol) <= 9:
 
                     # Save the current symbol to a new line on 'symbol.txt' without overwriting (append mode)
-                    append_new_line("symbol.txt", bSymbol)
+                    append_new_line("logging/symbol.txt", bSymbol)
 
                 # If it's not in the correct format, don't add it to the list
                 else:
@@ -190,7 +188,7 @@ def get_tweets(api):
                 if 1 < len(bSymbol) <= 9:
 
                     # Save the current symbol to a new line on 'symbol.txt' without overwriting (append mode)
-                    append_new_line("symbol.txt", bSymbol)
+                    append_new_line("logging/symbol.txt", bSymbol)
 
                 # If it's not in the correct format, don't add it to the list
                 else:
@@ -213,7 +211,7 @@ def get_tweets(api):
             if 1 < len(bSymbol) <= 9:
 
                 # Save the current symbol to a new line on 'symbol.txt' without overwriting (append mode)
-                append_new_line("symbol.txt", bSymbol)
+                append_new_line("logging/symbol.txt", bSymbol)
 
             # If it's not in the correct format, don't add it to the list
             else:
@@ -230,7 +228,7 @@ def get_tweets(api):
         # ID of the most recently scanned mention. The bot will scan all mentions since the last voting period in the
         # next round, using this ID as the starting point.
 
-        with open('lastID.txt', 'w') as f:
+        with open('logging/lastID.txt', 'w') as f:
             f.write(str(t.id))
             f.close()
 
@@ -313,7 +311,7 @@ def close_open_order(symbolparam, qtyparam, inversepos):
 # Used to format the tweet sent out for each round
 def compose_tweet(votes, price, symbol, balance, side, amount, profit):
     # Write to currentLog
-    with open('currentLog.txt', 'w') as f:
+    with open('logging/currentLog.txt', 'w') as f:
         f.write(
             "Stats | " + str(datetime.datetime.now())[0:20] + "\n\n" +
             "Votes: " + str(votes) + "\n" +
@@ -394,7 +392,7 @@ def main():
         elif long == 1:
 
             # Open Symbols file in read mode and find the most voted for symbol
-            with open('symbol.txt', 'r') as f:
+            with open('logging/symbol.txt', 'r') as f:
                 lines = f.readlines()
                 print("\nPrinting 'symbol.txt' cache ... " + str(lines))
                 frequent_word = ""
@@ -433,7 +431,7 @@ def main():
                 f.close()
 
             # CLEAR THE TEXT FILE FOR NEXT ROUND
-            with open('symbol.txt', 'w') as f:
+            with open('logging/symbol.txt', 'w') as f:
                 f.write("")
                 f.close()
 
@@ -556,7 +554,7 @@ def main():
         elif long == 2:
 
             # Open Symbols file in read mode and find the most voted for symbol
-            with open('symbol.txt', 'r') as f:
+            with open('logging/symbol.txt', 'r') as f:
                 lines = f.readlines()
                 print("\nPrinting 'symbol.txt' cache ... " + str(lines))
                 frequent_word = ""
@@ -595,7 +593,7 @@ def main():
                 f.close()
 
             # CLEAR THE TEXT FILE FOR NEXT ROUND
-            with open('symbol.txt', 'w') as f:
+            with open('logging/symbol.txt', 'w') as f:
                 f.write("")
                 f.close()
 

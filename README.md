@@ -162,10 +162,12 @@ The bot is running using the minimum balance as I develop it. I may stop or put 
 > Requires Python >= 3.8
 
 **1. Install requirements from within the directory:** `pip install -r requirements.txt`  
-**2. Add your API keys to `API/binance.json` and `API/twitter.json`, leaving the quotation marks, and save.**
+
+**2. Add your API keys to `API/binance.json` and `API/twitter.json`, leaving the quotation marks, and save.**  
+
 **3. Edit line 29 in main.py to your preferred round duration (in seconds).**  
 
-![](img/Snip1.png)
+>![](img/Snip1.png)
 
 **4. Run `python3 main.py` from the root directory. The bot will take its first poll immediately, then sleep.**
 
@@ -173,10 +175,17 @@ The bot is running using the minimum balance as I develop it. I may stop or put 
 
 **03-22-2021**
 > **v1.0.0 - Initial Commit**  
-*Added `README.md`, Core Files, and `config.yml` for GH-Pages, as well as Supported Symbols.*
-*Created Pre-Release v1.0.0*
+> - Added `README.md`  
+> - Added Core Files and Directories  
+> - Created`config.yml` and enabled github-pages from the root directory
+> - Created Pre-Release v1.0.0
 
 **03-23-2021**
 > **v1.1.0 - BugFix**  
-*Includes a restructure of the tweet parsing definition. Now supports a wider range of variable tweets with better error handling. "USDT" is no longer required for the bot to register a symbol from a mention tweet.*  
-*Created Release v1.1.0*
+> - Restructured tweet parsing definition.  
+>   - Now supports a wider range of variable tweets with better error handling. "USDT" is no longer required for the bot to register a symbol from a mention tweet.
+> - Created Release v1.1.0
+
+**03-24-2021**
+> **v1.1.1**  
+> - Refactored and added `logging/`
