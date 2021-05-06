@@ -2,7 +2,7 @@
 > **v1.1.0**
 ## What is this?
 
-[@Joh5Bot](https://twitter.com/joh5bot) is a twitter bot with access to a cryptocurrency exchange and a wallet. The bot waits for tweet "mentions" in the format below, and counts each tweet as a vote. Every hour, the bot tallies the votes and decides whether to long or short a suggested currency. The bot then takes market order on the given currency for 15% of the total account's balance, using 10x leverage. The bot then "sleeps" for exactly one hour, then closes the open position with a market order. This process repeats itself every hour, constituting a "round".
+@Joh5Bot (No longer active) is a twitter bot with access to a cryptocurrency exchange and a wallet. The bot waits for tweet "mentions" in the format below, and counts each tweet as a vote. Every hour, the bot tallies the votes and decides whether to long or short a suggested currency. The bot then takes market order on the given currency for 15% of the total account's balance, using 10x leverage. The bot then "sleeps" for exactly one hour, then closes the open position with a market order. This process repeats itself every hour, constituting a "round".
 
 At the end of every round, the bot sends a tweet with the vote totals for the upcoming round, and displays the total balance and total PNL. Checking the balance of the bot after a round against the bot's previous tweet yields the result of the last trade. The bot is active 24/7 apart from when it is undergoing a bug fix or testing.
 
